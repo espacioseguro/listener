@@ -7,7 +7,7 @@ import requests
 # Create a TCP/IP socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 # Bind the socket to the port
-server_address = ('192.168.0.13', 97)
+server_address = ('192.168.0.100', 97)
 print >>sys.stderr, 'starting up on %s port %s' % server_address
 sock.bind(server_address)
 # Listen for incoming connections
