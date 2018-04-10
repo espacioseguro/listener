@@ -25,7 +25,7 @@ while True:
         while True:
             data = connection.recv(1024)
             #urllib.request.urlopen('https://www.espacioseguro.pe/php_connection/47.php?data='+data)
-            urllib2.urlopen('https://www.espacioseguro.pe/php_connection/insertData.php?data='+data)
+            urllib2.urlopen('https://www.espacioseguro.pe/php_connection/cambiarEstado.php?data='+data)
             print >>sys.stderr, 'received "%s"' % data
             if data:
                 print >>sys.stderr, 'sending data back to the client'
