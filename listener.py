@@ -1,7 +1,7 @@
 #git pull https://rogger.aburto@gmail.com:Rj451300@gitlab.com/r1305/listener.git
 import socket
 import sys
-#import urllib
+import urllib
 import urllib2
 #import requests
 
@@ -25,7 +25,8 @@ while True:
         while True:
             data = connection.recv(1024)
             #urllib.request.urlopen('https://www.espacioseguro.pe/php_connection/47.php?data='+data)
-            urllib2.urlopen('https://www.espacioseguro.pe/php_connection/cambiarEstado.php?data='+data)
+            data_alarm=urllib.quote(data)
+            urllib2.urlopen('https://www.espacioseguro.pe/php_connection/cambiarEstado.php?data='+data_alarm)
             print >>sys.stderr, 'received "%s"' % data
             if data:
                 print >>sys.stderr, 'sending data back to the client'
