@@ -3,7 +3,6 @@
 # import sys
 # import urllib
 # import urllib2
-# #import requests
 
 # # Create a TCP/IP socket
 # sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -40,6 +39,8 @@
 #         connection.close()
 
 import select, socket, sys, Queue
+import urllib
+import urllib2
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.setblocking(0)
 server.bind(('192.168.1.100', 97))
