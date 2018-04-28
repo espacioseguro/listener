@@ -63,6 +63,15 @@ while inputs:
                 message_queues[s].put(data)
                 if s not in outputs:
                     outputs.append(s)
+                    data_alarm=urllib.quote(data)
+                    urllib2.urlopen('https://www.espacioseguro.pe/php_connection/cambiarEstado.php?data='+data_alarm)
+                    print >>sys.stderr, 'received "%s"' % data
+                    if data:
+                        print >>sys.stderr, 'sending data back to the client'
+                        connection.sendall(data)
+                    else:
+                        print >>sys.stderr, 'no more data from', client_address
+                        break 
             else:
                 if s in outputs:
                     outputs.remove(s)
