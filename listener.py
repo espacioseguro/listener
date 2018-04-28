@@ -12,7 +12,7 @@ server_address = ('192.168.1.100', 97)
 print >>sys.stderr, 'starting up on %s port %s' % server_address
 sock.bind(server_address)
 # Listen for incoming connections
-sock.listen(1)
+sock.listen(100)
 
 while True:
     # Wait for a connection
