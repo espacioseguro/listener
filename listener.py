@@ -50,49 +50,49 @@ outputs = []
 message_queues = {}
 try:
     while inputs:
-    readable, writable, exceptional = select.select(inputs, outputs, inputs)
-    for s in readable:
-        if s is server:
-            connection, client_address = s.accept()
-            connection.setblocking(0)
-            inputs.append(connection)
-            message_queues[connection] = Queue.Queue()
-        else:
-            data = s.recv(1024)
-            if data:
-                message_queues[s].put(data)
-                if s not in outputs:
-                    outputs.append(s)
-                    data_alarm=urllib.quote(data)
-                    urllib2.urlopen('https://www.espacioseguro.pe/php_connection/cambiarEstado.php?data='+data_alarm)
-                    print >>sys.stderr, 'received "%s"' % data
-                    if data:
-                        print >>sys.stderr, 'sending data back to the client'
-                        connection.sendall(data)
-                    else:
-                        print >>sys.stderr, 'no more data from', client_address
-                        break 
+        readable, writable, exceptional = select.select(inputs, outputs, inputs)
+        for s in readable:
+            if s is server:
+                connection, client_address = s.accept()
+                connection.setblocking(0)
+                inputs.append(connection)
+                message_queues[connection] = Queue.Queue()
             else:
-                if s in outputs:
-                    outputs.remove(s)
-                inputs.remove(s)
-                s.close()
-                del message_queues[s]
+                data = s.recv(1024)
+                if data:
+                    message_queues[s].put(data)
+                    if s not in outputs:
+                        outputs.append(s)
+                        data_alarm=urllib.quote(data)
+                        urllib2.urlopen('https://www.espacioseguro.pe/php_connection/cambiarEstado.php?data='+data_alarm)
+                        print >>sys.stderr, 'received "%s"' % data
+                        if data:
+                            print >>sys.stderr, 'sending data back to the client'
+                            connection.sendall(data)
+                        else:
+                            print >>sys.stderr, 'no more data from', client_address
+                            break 
+                else:
+                    if s in outputs:
+                        outputs.remove(s)
+                    inputs.remove(s)
+                    s.close()
+                    del message_queues[s]
 
-    for s in writable:
-        try:
-            next_msg = message_queues[s].get_nowait()
-        except Queue.Empty:
-            outputs.remove(s)
-        else:
-            s.send(next_msg)
+        for s in writable:
+            try:
+                next_msg = message_queues[s].get_nowait()
+            except Queue.Empty:
+                outputs.remove(s)
+            else:
+                s.send(next_msg)
 
-    for s in exceptional:
-        inputs.remove(s)
-        if s in outputs:
-            outputs.remove(s)
-        s.close()
-        del message_queues[s]
+        for s in exceptional:
+            inputs.remove(s)
+            if s in outputs:
+                outputs.remove(s)
+            s.close()
+            del message_queues[s]
 
 except socket.timeout as err:
     logging.error(err)
