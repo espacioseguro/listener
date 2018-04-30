@@ -48,8 +48,8 @@ server.listen(100)
 inputs = [server]
 outputs = []
 message_queues = {}
-
-while inputs:
+try:
+    while inputs:
     readable, writable, exceptional = select.select(
         inputs, outputs, inputs)
     for s in readable:
@@ -89,8 +89,13 @@ while inputs:
             s.send(next_msg)
 
     for s in exceptional:
-        inputs.remove(s)
-        if s in outputs:
-            outputs.remove(s)
-        s.close()
-        del message_queues[s]
+            inputs.remove(s)
+            if s in outputs:
+                outputs.remove(s)
+            s.close()
+            del message_queues[s]
+except socket.timeout as err:
+    print >>err
+
+except socket.error as err:
+    print >>err
