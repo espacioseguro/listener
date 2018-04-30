@@ -50,8 +50,7 @@ outputs = []
 message_queues = {}
 try:
     while inputs:
-    readable, writable, exceptional = select.select(
-        inputs, outputs, inputs)
+    readable, writable, exceptional = select.select(inputs, outputs, inputs)
     for s in readable:
         if s is server:
             connection, client_address = s.accept()
@@ -89,13 +88,14 @@ try:
             s.send(next_msg)
 
     for s in exceptional:
-            inputs.remove(s)
-            if s in outputs:
-                outputs.remove(s)
-            s.close()
-            del message_queues[s]
+        inputs.remove(s)
+        if s in outputs:
+            outputs.remove(s)
+        s.close()
+        del message_queues[s]
+
 except socket.timeout as err:
-    print >>err
+    logging.error(err)
 
 except socket.error as err:
-    print >>err
+    logging.error(err)
