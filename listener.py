@@ -95,7 +95,7 @@ try:
             del message_queues[s]
 
 except socket.timeout as err:
-    logging.error(err)
+    print err
 
 except socket.error as err:
-    logging.error(err)
+    print err
