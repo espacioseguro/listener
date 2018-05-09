@@ -43,7 +43,7 @@ import urllib
 import urllib2
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.setblocking(0)
-server.bind(('192.168.1.100', 97))
+server.bind(('10.142.0.2', 97))
 server.listen(100)
 inputs = [server]
 outputs = []
